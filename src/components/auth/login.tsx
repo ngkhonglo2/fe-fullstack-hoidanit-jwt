@@ -1,10 +1,17 @@
 "use client";
+
 import { Button, Col, Divider, Form, Input, Row } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
+import { authenticate } from "@/utils/action";
 
 const Login = () => {
-  const onFinish = async (values: any) => {};
+  const onFinish = async (values: any) => {
+    const { email, password } = values;
+    const res = await authenticate(email, password);
+    console.log('alo', res);
+  };
 
   return (
     <Row justify={"center"} style={{ marginTop: "30px" }}>
