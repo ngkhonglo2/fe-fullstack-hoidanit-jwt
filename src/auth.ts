@@ -36,10 +36,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         //Sai mật khẩu
         else if (+res.statusCode === 401) {
           throw new InvalidEmailPasswordError();
-        } else if (+res.statusCode === 401) {
+        } else if (+res.statusCode === 400) {
           throw new InactiveAccountError();
         } else {
-          console.log('vao day');
           throw new Error("Internal server error");
         }
       },
