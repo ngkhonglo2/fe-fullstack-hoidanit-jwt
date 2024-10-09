@@ -21,13 +21,13 @@ const Register = () => {
       },
     });
     if (res?.data) {
-      router.push(`veirfy/${res?.data?._id}`);
+      router.push(`/verify/${res?.data?._id}`);
     } else {
       notification.error({
         message: "Register error",
         description: res?.message,
       });
-    }
+    }``
   };
 
   return (
