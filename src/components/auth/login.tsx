@@ -1,12 +1,12 @@
 "use client";
-
 import { Button, Col, Divider, Form, Input, notification, Row } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { authenticate } from "@/utils/action";
 import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
 import { useState } from "react";
+import ModalChangePassword from "./modal.change.password";
+import dynamic from "next/dynamic";
 
 const ModalReactive = dynamic(() => import("./modal.reavtive"), { ssr: false });
 
@@ -15,17 +15,21 @@ const Login = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userEmail, setUserEmail] = useState<string>("");
 
+  const [changePassword, setChangePassword] = useState(false);
+
   const onFinish = async (values: any) => {
     const { username, password } = values;
     setUserEmail("");
+    //trigger sign-in
     const res = await authenticate(username, password);
+
     if (res?.error) {
+      //error
       if (res?.code === 2) {
         setIsModalOpen(true);
         setUserEmail(username);
         return;
       }
-      // error
       notification.error({
         message: "Error login",
         description: res?.error,
@@ -82,9 +86,20 @@ const Login = () => {
               </Form.Item>
 
               <Form.Item>
-                <Button type="primary" htmlType="submit">
-                  Login
-                </Button>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Button type="primary" htmlType="submit">
+                    Login
+                  </Button>
+                  <Button type="link" onClick={() => setChangePassword(true)}>
+                    Quên mật khẩu ?
+                  </Button>
+                </div>
               </Form.Item>
             </Form>
             <Link href={"/"}>
@@ -99,9 +114,13 @@ const Login = () => {
         </Col>
       </Row>
       <ModalReactive
-        setIsModalOpen={setIsModalOpen}
         isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
         email={userEmail}
+      />
+      <ModalChangePassword
+        isModalOpen={changePassword}
+        setIsModalOpen={setChangePassword}
       />
     </>
   );
